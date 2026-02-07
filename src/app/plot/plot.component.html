@@ -1,0 +1,86 @@
+<!-- dropdown -->
+<div>
+  <select (change)="onChange($event)">
+    <option value="none" selected disabled>-ISO-</option>
+    @for (country of countries; track country) {
+      <option [value]="country">
+        {{ country }}
+      </option>
+    }
+  </select>
+</div>
+
+<!-- plot -->
+<div>
+  <svg [attr.width]="width + 50" [attr.height]="height + 50">
+    <g transform="translate(25, 25)">
+      <!-- y-labels -->
+      @for (y of yLabels; track y) {
+        <text
+          x="-3"
+          [attr.y]="(100 - y) * 2"
+          font-size="10"
+          dominant-baseline="middle"
+          text-anchor="end"
+        >
+          {{ y }}
+        </text>
+      }
+
+      @for (x of xLabels; track x; let i = $index; let c = $count) {
+        <!-- x-labels -->
+        <text
+          [attr.x]="(i / c) * width + 8"
+          y="223"
+          font-size="10"
+          [attr.transform]="'rotate(-90,' + ((i / c) * width + 8) + ',223)'"
+          dominant-baseline="middle"
+        >
+          @for (l of x; track $index; let i = $index) {}
+          {{ x }}
+        </text>
+
+        <!-- bars -->
+        @if (selectedCountry && data[selectedCountry][x]) {
+          @if (data[selectedCountry][x]['T']) {
+            <line
+              [attr.x1]="(i / c) * width + 4"
+              [attr.x2]="(i / c) * width + 4"
+              [attr.y2]="(100 - data[selectedCountry][x]['T']) * 2"
+              [attr.y1]="height"
+              stroke="black"
+              stroke-width="4"
+              stroke-dasharray="6 1"
+            />
+          }
+          @if (data[selectedCountry][x]['M']) {
+            <line
+              [attr.x1]="(i / c) * width + 8"
+              [attr.x2]="(i / c) * width + 8"
+              [attr.y2]="(100 - data[selectedCountry][x]['M']) * 2"
+              [attr.y1]="height"
+              stroke="blue"
+              stroke-width="4"
+              stroke-dasharray="6 1"
+            />
+          }
+          @if (data[selectedCountry][x]['F']) {
+            <line
+              [attr.x1]="(i / c) * width + 12"
+              [attr.x2]="(i / c) * width + 12"
+              [attr.y2]="(100 - data[selectedCountry][x]['F']) * 2"
+              [attr.y1]="height"
+              stroke="red"
+              stroke-width="4"
+              stroke-dasharray="6 1"
+            />
+          }
+        }
+      }
+
+      <!-- axes -->
+      <line x1="0" y1="0" x2="0" [attr.y2]="height" stroke="black" />
+      <line x1="0" [attr.y1]="height" [attr.x2]="width" [attr.y2]="height" stroke="black" />
+    </g>
+  </svg>
+</div>
