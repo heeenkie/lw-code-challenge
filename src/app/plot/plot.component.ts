@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { LmpService } from '../../services/lmp.service';
-import { MyLmpDataModel, MyLmpModel } from '../../models/my-lmp.model';
+import { MyLmpDataModel } from '../../models/my-lmp.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({
